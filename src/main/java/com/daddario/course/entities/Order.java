@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.daddario.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -29,16 +30,19 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="client_id")
 	private User client;
+	
+	private Integer orderStatus;
 
 	// Construtores
 	public Order()
 	{
 	}
 	
-	public Order(Long id, Instant momento, User client) {
+	public Order(Long id, Instant momento, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.momento = momento;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -67,6 +71,16 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
+	}
+
 	// HashCode
 	@Override
 	public int hashCode() {

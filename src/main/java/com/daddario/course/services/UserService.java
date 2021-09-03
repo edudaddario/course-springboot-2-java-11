@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.daddario.course.entities.User;
 import com.daddario.course.repositories.UserRepository;
+import com.daddario.course.services.exceptions.ResourceNotFoundException;
 
 /* 
  * Famosa Classe de Negócio (GER -> NEG -> DAD)
@@ -26,7 +27,8 @@ public class UserService {
 	
 	public User findByID(Long id) {
 		Optional<User> obj = repository.findById(id); // vai no banco e traz o objeto
-		return obj.get();
+		/* return obj.get();	// .get dá erro padrão */
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {

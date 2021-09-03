@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.daddario.course.entities.Category;
 import com.daddario.course.entities.Order;
 import com.daddario.course.entities.OrderItem;
+import com.daddario.course.entities.Payment;
 import com.daddario.course.entities.Product;
 import com.daddario.course.entities.User;
 import com.daddario.course.entities.enums.OrderStatus;
@@ -88,7 +89,13 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		
-		OrdemItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));		
+		OrdemItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
+		
+		// Para este caso de 1 para 1 não preciso criar um repositório
+		Payment pay1 = new Payment(null,Instant.parse("2019-06-20T21:00:00Z"),o1);
+		o1.setPayment(pay1);
+		orderRepository.save(o1);
+		
 		}
 	
 }

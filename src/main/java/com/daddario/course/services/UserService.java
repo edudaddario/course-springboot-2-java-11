@@ -3,6 +3,8 @@ package com.daddario.course.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -51,10 +53,16 @@ public class UserService {
 	
 	public User update(Long id, User obj) {
 		
-		// prepara o objeto monitorado pra vc mexer e depois fazer algo no banco
-		User entity = repository.getById(id);
-		updateData(entity,obj);
-		return repository.save(entity);
+		// getById prepara o objeto monitorado pra vc mexer e depois fazer algo no banco
+		
+		try {
+			User entity = repository.getById(id);
+			updateData(entity,obj);
+			return repository.save(entity);
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 		
 	}
 
